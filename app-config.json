@@ -1,0 +1,112 @@
+{
+  "appMeta": {
+    "name": "Finance Calculator",
+    "version": "1.1",
+    "platform": "mobile",
+    "frameworks": ["React Native (Expo)"],
+    "defaultLocale": "en-US",
+    "autoDetectCurrency": true,
+    "notes": "Mobile-first, offline-capable, AI assistant integrated."
+  },
+  "currencies": {
+    "autoDetect": true,
+    "defaultOnFail": "USD",
+    "supported": ["GHS", "USD", "EUR", "GBP", "NGN", "KES", "ZAR"],
+    "currencyPicker": {
+      "type": "dropdown",
+      "includeSymbol": true,
+      "recentlyUsed": true
+    }
+  },
+  "calculators": {
+    "compoundInterest": {
+      "id": "compoundInterest",
+      "title": "Compound Interest",
+      "description": "Projects investment growth with periodic contributions and compounding.",
+      "inputs": [
+        {"key": "initialInvestment", "label": "Initial Investment", "type": "currency", "required": true},
+        {"key": "contributionAmount", "label": "Contribution Amount", "type": "currency", "required": true},
+        {"key": "contributionFrequency", "label": "Contribution Frequency", "type": "dropdown", "options": ["Daily","Weekly","Monthly","Quarterly","Yearly"], "required": true},
+        {"key": "annualInterestRate", "label": "Annual Interest Rate (%)", "type": "percentage", "required": true},
+        {"key": "investmentPeriodYears", "label": "Investment Period (Years)", "type": "number", "required": true},
+        {"key": "compoundingFrequency", "label": "Compounding Frequency", "type": "dropdown", "options": ["Monthly","Quarterly","Semi-Annually","Annually"], "required": true},
+        {"key": "annualDepositIncrement", "label": "Annual Deposit Increment (%)", "type": "percentage", "required": false, "default": 0}
+      ],
+      "outputs": ["finalAmount","totalContributions","totalInterest","annualBreakdown"]
+    },
+    "fixedDeposit": {
+      "id": "fixedDeposit",
+      "title": "Fixed Deposit",
+      "description": "Calculates maturity amounts for deposit with different payout options.",
+      "inputs": [
+        {"key": "depositAmount", "label": "Deposit Amount", "type": "currency", "required": true},
+        {"key": "annualInterestRate", "label": "Annual Interest Rate (%)", "type": "percentage", "required": true},
+        {"key": "tenure", "label": "Tenure (Years)", "type": "number", "required": true},
+        {"key": "interestPayout", "label": "Interest Payout", "type": "dropdown", "options": ["Cumulative","Monthly","Quarterly","Annually"], "required": true}
+      ],
+      "outputs": ["maturityValue","totalInterest","periodicPayoutAmount"]
+    },
+    "treasuryBills": {
+      "id": "treasuryBills",
+      "title": "Treasury Bills",
+      "description": "Calculates discounted purchase price and effective yield for T-bills.",
+      "inputs": [
+        {"key": "investmentAmount", "label": "Investment Amount", "type": "currency", "required": true},
+        {"key": "maturityPeriodDays", "label": "Maturity Period", "type": "dropdown", "options": [91,182,364], "required": true},
+        {"key": "annualInterestRate", "label": "Annual Interest Rate (%)", "type": "percentage", "required": true}
+      ],
+      "outputs": ["discountedPrice","profit","effectiveYield"]
+    },
+    "loans": {
+      "id": "loans",
+      "title": "Loans",
+      "description": "EMI, amortization schedule and affordability insights.",
+      "inputs": [
+        {"key": "loanAmount", "label": "Loan Amount", "type": "currency", "required": true},
+        {"key": "annualInterestRate", "label": "Interest Rate (p.a %)", "type": "percentage", "required": true},
+        {"key": "loanPeriod", "label": "Loan Period", "type": "number", "required": true},
+        {"key": "loanPeriodUnit", "label": "Loan Period Unit", "type": "dropdown", "options": ["Years","Months"], "required": true},
+        {"key": "annualIncome", "label": "Annual Income (optional)", "type": "currency", "required": false}
+      ],
+      "outputs": ["monthlyEMI","totalInterest","totalRepayment","amortizationSchedule","debtToIncomeRatio"]
+    },
+    "retirementPlanner": {
+      "id": "retirementPlanner",
+      "title": "Retirement Planner",
+      "description": "Estimate retirement corpus and real value after inflation.",
+      "inputs": [
+        {"key": "currentAge", "label": "Current Age", "type": "number", "required": true},
+        {"key": "retirementAge", "label": "Retirement Age", "type": "number", "required": true},
+        {"key": "currentBalance", "label": "Current Balance", "type": "currency", "required": true},
+        {"key": "monthlyContribution", "label": "Monthly Contribution", "type": "currency", "required": true},
+        {"key": "expectedReturn", "label": "Expected Return (%)", "type": "percentage", "required": true},
+        {"key": "inflationRate", "label": "Inflation Rate (%)", "type": "percentage", "required": true}
+      ],
+      "outputs": ["projectedCorpusNominal","projectedCorpusReal","yearlyProjection"]
+    }
+  },
+  "aiAssistant": {
+    "enabled": true,
+    "provider": "OpenAI",
+    "defaultModel": "gpt-4o-mini",
+    "promptTemplates": {
+      "summary": "Summarize the calculation results in 2-3 short sentences and provide 2 actionable tips.",
+      "whatIf": "Given the result, simulate increasing contribution by X% and show new finalAmount and % improvement.",
+      "explainFormula": "Explain the formula used in simple terms for a non-technical user."
+    },
+    "ui": {"mode":"collapsibleDrawer","autoTrigger":"postCalculation","manualTriggerLabel":"Ask AI"},
+    "privacy": {"sendRawInputs": false, "sendDerivedResults": true, "userConsentRequired": true}
+  },
+  "ui": {
+    "theme": {"primaryColor":"#0B5FFF","accent":"#FFC857","darkMode":true},
+    "navigation": ["home","history","aiAssistant","settings"],
+    "homeLayout": {"type":"cardGrid","cardsPerRow":2},
+    "breakdownModal": {"animation":"slideUp","closeOnBackdropTap":true,"maxHeightPercent":88}
+  },
+  "performance": {
+    "targetCalcLatencyMs": 500,
+    "targetUIFrameRate": 60,
+    "optimizations": ["useSQLiteCache","memoizeCalculations","debounceInputs","useNativeDriverForAnimations"],
+    "offlineMode": {"cacheLastCalculations": 50}
+  }
+}

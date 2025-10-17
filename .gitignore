@@ -39,3 +39,17 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Google Play / App Store credentials
+google-play-service-account.json
+*.keystore
+*.jks
+App Store API Key.p8
+
+# EAS Build
+.eas/
+
+# Build artifacts
+*.apk
+*.aab
+*.ipa
